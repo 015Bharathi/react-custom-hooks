@@ -1,23 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+
+import useFetch from "./components/useFetch";
+import { useState } from "react";
 
 function App() {
+  const [id, setId] = useState("");
+  const [url, setUrl] = useState("https://jsonplaceholder.typicode.com/users");
+  const { data, loading } = useFetch(url);
+  if (loading) return <p>hi</p>;
+
+  //   console.log(data);
+
+  const handleChange = (e) => {
+    setId(e.target.value);
+
+  };
+  console.log("value: ", id);
+
+  const handleClick = () => {
+    if (id) {
+        setUrl(`https://jsonplaceholder.typicode.com/users/${id}`)
+    }
+    setId("")
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input
+        type="text"
+        value={id}
+        placeholder="Enter Your Id...."
+        onChange={handleChange}
+      />
+      <button onClick={handleClick}>Click</button>
+      {
+        data && (
+            <div>
+                <h1>{data.id}</h1>
+                <h1>{data.name}</h1>
+            </div>
+        )
+        
+      }
+
     </div>
   );
 }
